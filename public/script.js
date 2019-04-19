@@ -22,6 +22,7 @@ window.onload = function() {
             <button
               class="btn btn-outline-success btn-sm"
               id=${todo.id}
+              cy-data=${'todo-' + index}
               onClick="doneTODO(event)"
             >
               Done
@@ -59,5 +60,4 @@ function doneTODO(event) {
     body: JSON.stringify({ done: true })
   })
   .then(() => window.location.reload());
-
 }

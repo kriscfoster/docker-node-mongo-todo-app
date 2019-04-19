@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",
+    "start:dev": "nodemon --ignore 'todo.json' server.js",
     "test:headless": "cypress run",
-    "test": "cypress open"
+    "test": "cypress open",
+    "db:reset": "node resetDB.js",
+    "ci:dev": "start-server-and-test start:dev :5000 test",
+    "ci": "start-server-and-test start :5000 test:headless"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +28,7 @@
     "webpack-cli": "^3.1.2"
   },
   "devDependencies": {
-    "cypress": "^3.2.0"
+    "cypress": "^3.2.0",
+    "start-server-and-test": "^1.7.13"
   }
 }

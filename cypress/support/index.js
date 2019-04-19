@@ -16,5 +16,11 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
+beforeEach(function () {
+  // now this runs prior to every test
+  // across all files no matter what
+  cy.exec('npm run db:reset');
+});
+
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
