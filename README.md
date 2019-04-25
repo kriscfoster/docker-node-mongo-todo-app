@@ -7,8 +7,8 @@ This is a todo web application. It keeps track of chores you need to do and have
 https://www.youtube.com/watch?v=woI490HRM34
 
 ## Running Application Locally
-```npm install```
-```npm run start:dev```
+* ```npm install```
+* ```npm run start:dev```
 
 ## Running End-to-End Tests Locally
-```npm run ci:dev```
+* ```npm run ci:dev```
