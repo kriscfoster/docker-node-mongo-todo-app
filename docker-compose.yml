@@ -12,7 +12,3 @@ services:
     image: "mongo"
     ports:
       - "27017:27017"
-  adminmongo:
-    image: "mrvautin/adminmongo"
-    ports:
-      - "1234:1234"
