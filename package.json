@@ -5,30 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "start:dev": "nodemon --ignore 'todo.json' server.js",
-    "test:headless": "cypress run",
-    "test": "cypress open",
-    "db:reset": "node resetDB.js",
-    "ci:dev": "start-server-and-test start:dev :5000 test",
-    "ci": "start-server-and-test start :5000 test:headless"
+    "start:dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.4",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "nodemon": "^1.18.9",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "wait-on": "^3.2.0",
-    "webpack": "^4.28.3",
-    "webpack-cli": "^3.1.2"
-  },
-  "devDependencies": {
-    "cypress": "^3.2.0",
-    "start-server-and-test": "^1.7.13"
+    "mongoose": "^5.4.1"
   }
 }

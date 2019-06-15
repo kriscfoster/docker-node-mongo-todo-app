@@ -1,7 +1,8 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const db = require('./db/index.js');
+const ToDo = require('./db/models/toDo.js').ToDo;
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -10,50 +11,31 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.use(express.static(__dirname + '/public'));
-app.listen(PORT);
 
-const util = require('util');
-fs.readFileAsync = util.promisify(fs.readFile);
-fs.writeFileAsync = util.promisify(fs.writeFile);
+db.connect().then(() => {
+  console.log('Listening on port: ' + PORT);
+  app.listen(PORT);
+});
 
 app.get('/todo', (req, res) => {
-  fs.readFileAsync('todo.json', 'utf-8').then((data) => {
-    const todo = JSON.parse(data).todo;
-    res.send({
-      body: todo,
-    });
-  })
-})
+  ToDo.find()
+    .then((toDos) => res.status(200).send(toDos))
+    .catch((err) => res.status(400).send(err));
+});
 
 app.post('/todo', (req, res) => {
-  fs.readFileAsync('todo.json', 'utf-8').then((data) => {
-    const parsed = JSON.parse(data);
-    const newTODO = req.body;
-    const date = new Date();
-    newTODO.id = date.getTime().toString();
-    parsed.todo.push(newTODO);
-    const stringData = JSON.stringify(parsed);
-    return fs.writeFileAsync('todo.json', stringData, 'utf-8');
-  })
-  .then(() => {
-    res.send({ ok: true });
-  })
+  const body = req.body;
+  const toDo = new ToDo({
+    text: body.text,
+  });
+  toDo.save(toDo)
+    .then((savedToDo) => res.status(201).send(savedToDo))
+    .catch((err) => res.status(400).send(err));
 });
 
 app.patch('/todo/:id', (req, res) => {
-  fs.readFileAsync('todo.json', 'utf-8').then((data) => {
-    const parsed = JSON.parse(data);
-    const { id } = req.params;
-    parsed.todo.forEach((todo) => {
-      if (todo.id === id) {
-        todo.done = true;
-      }
-    });
-
-    const stringData = JSON.stringify(parsed);
-    return fs.writeFileAsync('todo.json', stringData, 'utf-8');
-  })
-  .then(() => {
-    res.send({ ok: true });
-  })
+  const { id } = req.params;
+  ToDo.findOneAndUpdate({ _id: id }, { done: true })
+    .then((toDo) => res.status(200).send(toDo))
+    .catch((err) => res.status(400).send(err));
 });

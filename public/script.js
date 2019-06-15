@@ -3,7 +3,7 @@ window.onload = function() {
     method: 'GET'
   })
   .then((res) => res.json())
-  .then(({ body }) => {
+  .then((body) => {
     const todoBody = document.getElementById('todo-body');
     const doneBody = document.getElementById('done-body');
     body.forEach((todo, index) => {
@@ -21,7 +21,7 @@ window.onload = function() {
           <td>
             <button
               class="btn btn-outline-success btn-sm"
-              id=${todo.id}
+              id=${todo._id}
               cy-data=${'todo-' + index}
               onClick="doneTODO(event)"
             >
@@ -50,7 +50,6 @@ function createTODO() {
 
 function doneTODO(event) {
   const { id } = event.target;
-
   fetch(`/todo/${id}`, {
     method: 'PATCH',
     headers: {
