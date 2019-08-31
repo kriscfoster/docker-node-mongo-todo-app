@@ -1,21 +1,13 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const db = require('./db/index.js');
-const ToDo = require('./db/models/toDo.js').ToDo;
 
 const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
 app.use(express.static(__dirname + '/public'));
-
-db.connect().then(() => {
-  console.log('Listening on port: ' + PORT);
-  app.listen(PORT);
-});
 
 app.get('/todo', (req, res) => {
   ToDo.find()
@@ -38,4 +30,13 @@ app.patch('/todo/:id', (req, res) => {
   ToDo.findOneAndUpdate({ _id: id }, { done: true })
     .then((toDo) => res.status(200).send(toDo))
     .catch((err) => res.status(400).send(err));
+});
+
+const mongoose = require('mongoose');
+const ToDo = require('./toDoModel.js').ToDo;
+const DB_URI = 'mongodb://mongo:27017/toDoApp';
+
+mongoose.connect(DB_URI).then(() => {
+  console.log('Listening on port: ' + PORT);
+  app.listen(PORT);
 });
